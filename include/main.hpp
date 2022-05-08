@@ -39,3 +39,9 @@
 // Define these functions here so that we can easily read configuration and log information from other files
 Configuration& getConfig();
 Logger& getLogger();
+
+// Static Variables
+static ModInfo modInfo; // Stores the ID and version of our mod, and is sent to the modloader upon startup
+static GlobalNamespace::LevelCollectionNavigationController *levelCollectionNavigationController;
+static GlobalNamespace::LevelFilteringNavigationController *filteringNavigationController;
+static UnityEngine::UI::Button *button;
