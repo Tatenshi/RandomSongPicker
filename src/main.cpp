@@ -29,8 +29,8 @@ MAKE_HOOK_MATCH(SoloFreePlayFlowCoordinatorHook, &HMUI::FlowCoordinator::Present
     if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(flowCoordinator))
     {
         auto *ActuallySoloFreePlayFlowCoordinator = (GlobalNamespace::SoloFreePlayFlowCoordinator *)flowCoordinator;
-        levelCollectionNavigationController = ActuallySoloFreePlayFlowCoordinator->dyn_levelSelectionNavigationController()->dyn__levelCollectionNavigationController();
-        filteringNavigationController = ActuallySoloFreePlayFlowCoordinator->dyn_levelSelectionNavigationController()->dyn__levelFilteringNavigationController();
+        levelCollectionNavigationController = ActuallySoloFreePlayFlowCoordinator->levelSelectionNavigationController->levelCollectionNavigationController;
+        filteringNavigationController = ActuallySoloFreePlayFlowCoordinator->levelSelectionNavigationController->levelFilteringNavigationController;
         button->get_gameObject()->set_active(true);
         getLogger().info("Activated Random Song Button");
     }
@@ -56,14 +56,13 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
                 // Get Array of all beatmaps that the user currently sees
                 ArrayW<GlobalNamespace::IPreviewBeatmapLevel*> allmapsArray;
                 
-                //auto* levelPack = reinterpret_cast<GlobalNamespace::IAnnotatedBeatmapLevelCollection*>(levelCollectionNavigationController->dyn__levelPack());
-                auto* levelPack = levelCollectionNavigationController->dyn__levelPack();
+                auto* levelPack = levelCollectionNavigationController->levelPack;
                 if(levelPack) {
                     allmapsArray = il2cpp_utils::cast<GlobalNamespace::IAnnotatedBeatmapLevelCollection>(levelPack)->get_beatmapLevelCollection()->get_beatmapLevels();
                     getLogger().info("Acquired Maps using CollectionNavigationView");
                 }
                 else {
-                    allmapsArray = filteringNavigationController->dyn__levelSearchViewController()->dyn__beatmapLevelPackCollection()->get_beatmapLevelCollection()->get_beatmapLevels();
+                    allmapsArray = filteringNavigationController->levelSearchViewController->beatmapLevelPackCollection->get_beatmapLevelCollection()->get_beatmapLevels();
                     getLogger().info("Acquired Maps using SearchView");
                 }
 
