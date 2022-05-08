@@ -56,13 +56,14 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
                 // Get Array of all beatmaps that the user currently sees
                 System::Array* allmapsArray;
                 
-                auto* levelPack = reinterpret_cast<GlobalNamespace::IAnnotatedBeatmapLevelCollection*>(levelCollectionNavigationController->dyn__levelPack());
+                //auto* levelPack = reinterpret_cast<GlobalNamespace::IAnnotatedBeatmapLevelCollection*>(levelCollectionNavigationController->dyn__levelPack());
+                auto* levelPack = levelCollectionNavigationController->dyn__levelPack();
                 if(levelPack) {
-                    allmapsArray = reinterpret_cast<System::Array*>(levelPack->get_beatmapLevelCollection()->get_beatmapLevels());
+                    allmapsArray = il2cpp_utils::cast<System::Array>(il2cpp_utils::cast<GlobalNamespace::IAnnotatedBeatmapLevelCollection>(levelPack)->get_beatmapLevelCollection()->get_beatmapLevels());
                     getLogger().info("Acquired Maps using CollectionNavigationView");
                 }
                 else {
-                    allmapsArray = reinterpret_cast<System::Array*>(filteringNavigationController->dyn__levelSearchViewController()->dyn__beatmapLevelPackCollection()->get_beatmapLevelCollection()->get_beatmapLevels());
+                    allmapsArray = il2cpp_utils::cast<System::Array>(filteringNavigationController->dyn__levelSearchViewController()->dyn__beatmapLevelPackCollection()->get_beatmapLevelCollection()->get_beatmapLevels());
                     getLogger().info("Acquired Maps using SearchView");
                 }
 
@@ -73,7 +74,7 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
                 if(max > 0)
                 {
                     // Select a random level from 0 to max (exclusive)
-                    levelCollectionNavigationController->SelectLevel(reinterpret_cast<GlobalNamespace::IPreviewBeatmapLevel*>(allmapsArray->System_Collections_IList_get_Item(rand() % max)));
+                    levelCollectionNavigationController->SelectLevel(il2cpp_utils::cast<GlobalNamespace::IPreviewBeatmapLevel>(allmapsArray->System_Collections_IList_get_Item(rand() % max)));
                     getLogger().info("Selected level");
                 }
                 else {
