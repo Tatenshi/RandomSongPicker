@@ -72,7 +72,7 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
 
                 if(max > 0)
                 {
-                    // Select a random level form 0 to max (exclusive)
+                    // Select a random level from 0 to max (exclusive)
                     levelCollectionNavigationController->SelectLevel(reinterpret_cast<GlobalNamespace::IPreviewBeatmapLevel*>(allmapsArray->System_Collections_IList_get_Item(rand() % max)));
                     getLogger().info("Selected level");
                 }
