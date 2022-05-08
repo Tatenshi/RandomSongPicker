@@ -4,7 +4,7 @@ Pick a random custom song!
 
 An Oculus Quest mod that simply adds a button to select a random song.
 
-Mod is still in testing. Crashes may occur!
+![Image of the UI](ReadMeAssets/UI.jpg)
 
 ## Credits
 
