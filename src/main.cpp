@@ -49,7 +49,7 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
     if (firstActivation)
     {
         // Create Randomselection Button
-        button = QuestUI::BeatSaberUI::CreateUIButton(self->get_transform(), "", "PracticeButton", UnityEngine::Vector2(56.0f, 0), UnityEngine::Vector2(11.0f, 15.0f), []() {
+        button = QuestUI::BeatSaberUI::CreateUIButton(self->get_transform(), "", UnityEngine::Vector2(56.0f, 0), UnityEngine::Vector2(11.0f, 11.0f), []() {
             // Only do Things, if we also have the necessary References
             if(levelCollectionNavigationController && filteringNavigationController)
             {
@@ -59,11 +59,11 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
                 auto* levelPack = reinterpret_cast<GlobalNamespace::IAnnotatedBeatmapLevelCollection*>(levelCollectionNavigationController->dyn__levelPack());
                 if(levelPack) {
                     allmapsArray = reinterpret_cast<System::Array*>(levelPack->get_beatmapLevelCollection()->get_beatmapLevels());
-                    getLogger().info("Acquired LevelPack using CollectionNavigationView");
+                    getLogger().info("Acquired Maps using CollectionNavigationView");
                 }
                 else {
                     allmapsArray = reinterpret_cast<System::Array*>(filteringNavigationController->dyn__levelSearchViewController()->dyn__beatmapLevelPackCollection()->get_beatmapLevelCollection()->get_beatmapLevels());
-                    getLogger().info("Acquired LevelPack using SearchView");
+                    getLogger().info("Acquired Maps using SearchView");
                 }
 
                 // Calculate Upper Bound for rand
@@ -81,10 +81,9 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
                 }
             } });
 
-        // HACK Add Text as a new Object because the included Textobject does not generate the correct size after the resizing of the Button
-        auto text = QuestUI::BeatSaberUI::CreateText(button->get_transform(), "Random\r\nSong!", true);
-        text->set_alignment(TMPro::TextAlignmentOptions::Center);
-        text->set_fontSize(3.2f);
+        // Set Icon of the Button and scale it to fit the Button
+        auto *image = QuestUI::BeatSaberUI::CreateImage(button->get_transform(), QuestUI::BeatSaberUI::Base64ToSprite(diceIcon));
+        image->get_rectTransform()->set_localScale({0.65f, 0.65f, 1.0f});
 
         getLogger().info("Created Random Song Button");
     }
