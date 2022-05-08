@@ -20,6 +20,8 @@
 #include "GlobalNamespace/AnnotatedBeatmapLevelCollectionsViewController.hpp"
 #include "GlobalNamespace/IBeatmapLevelCollection.hpp"
 #include "GlobalNamespace/IAnnotatedBeatmapLevelCollection.hpp"
+#include "GlobalNamespace/LevelSearchViewController.hpp"
+#include "GlobalNamespace/LevelSearchViewController_BeatmapLevelPackCollection.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "HMUI/ViewController_AnimationDirection.hpp"
 #include "UnityEngine/UI/Button.hpp"
