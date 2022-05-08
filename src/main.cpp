@@ -54,27 +54,27 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
             if(levelCollectionNavigationController && filteringNavigationController)
             {
                 // Get Array of all beatmaps that the user currently sees
-                System::Array* allmapsArray;
+                ArrayW<GlobalNamespace::IPreviewBeatmapLevel*> allmapsArray;
                 
                 //auto* levelPack = reinterpret_cast<GlobalNamespace::IAnnotatedBeatmapLevelCollection*>(levelCollectionNavigationController->dyn__levelPack());
                 auto* levelPack = levelCollectionNavigationController->dyn__levelPack();
                 if(levelPack) {
-                    allmapsArray = il2cpp_utils::cast<System::Array>(il2cpp_utils::cast<GlobalNamespace::IAnnotatedBeatmapLevelCollection>(levelPack)->get_beatmapLevelCollection()->get_beatmapLevels());
+                    allmapsArray = il2cpp_utils::cast<GlobalNamespace::IAnnotatedBeatmapLevelCollection>(levelPack)->get_beatmapLevelCollection()->get_beatmapLevels();
                     getLogger().info("Acquired Maps using CollectionNavigationView");
                 }
                 else {
-                    allmapsArray = il2cpp_utils::cast<System::Array>(filteringNavigationController->dyn__levelSearchViewController()->dyn__beatmapLevelPackCollection()->get_beatmapLevelCollection()->get_beatmapLevels());
+                    allmapsArray = filteringNavigationController->dyn__levelSearchViewController()->dyn__beatmapLevelPackCollection()->get_beatmapLevelCollection()->get_beatmapLevels();
                     getLogger().info("Acquired Maps using SearchView");
                 }
 
                 // Calculate Upper Bound for rand
-                int max = allmapsArray->System_Collections_ICollection_get_Count();
+                int max = allmapsArray->Length();
                 getLogger().info("Acquired BeatMapCount");
 
                 if(max > 0)
                 {
                     // Select a random level from 0 to max (exclusive)
-                    levelCollectionNavigationController->SelectLevel(il2cpp_utils::cast<GlobalNamespace::IPreviewBeatmapLevel>(allmapsArray->System_Collections_IList_get_Item(rand() % max)));
+                    levelCollectionNavigationController->SelectLevel(allmapsArray->get(rand() % max));
                     getLogger().info("Selected level");
                 }
                 else {
