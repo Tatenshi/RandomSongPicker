@@ -26,13 +26,24 @@ MAKE_HOOK_MATCH(SoloFreePlayFlowCoordinatorHook, &HMUI::FlowCoordinator::Present
         auto *ActuallySoloFreePlayFlowCoordinator = (GlobalNamespace::SoloFreePlayFlowCoordinator *)flowCoordinator;
         levelCollectionNavigationController = ActuallySoloFreePlayFlowCoordinator->levelSelectionNavigationController->levelCollectionNavigationController;
         filteringNavigationController = ActuallySoloFreePlayFlowCoordinator->levelSelectionNavigationController->levelFilteringNavigationController;
-        button->get_gameObject()->set_active(true);
-        getLogger().info("Activated Random Song Button");
+        
+        if(button) {
+            button->get_gameObject()->set_active(true);
+            getLogger().info("Activated Random Song Button");
+        }
+        else {
+            getLogger().info("Wanted to activated Random Song Button, but button was null");
+        }
     }
     else
     {
-        button->get_gameObject()->set_active(false);
-        getLogger().info("Disabled Random Song Button");
+        if(button) {
+            button->get_gameObject()->set_active(false);
+            getLogger().info("Disabled Random Song Button");
+        }
+        else {
+            getLogger().info("Wanted to disable Random Song Button, but button was null");
+        }
     }
 }
 
