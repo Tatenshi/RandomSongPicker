@@ -1,6 +1,6 @@
 # RandomSongPicker
 
-Pick a random custom song!
+Pick a random song!
 
 An Oculus Quest mod that simply adds a button to select a random song.
 
