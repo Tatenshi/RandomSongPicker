@@ -60,7 +60,7 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
             if(levelCollectionNavigationController && filteringNavigationController)
             {
                 // Get Array of all beatmaps that the user currently sees
-                ArrayW<GlobalNamespace::IPreviewBeatmapLevel*> allmapsArray;
+                Array<GlobalNamespace::IPreviewBeatmapLevel*> *allmapsArray;
                 
                 auto* levelPack = levelCollectionNavigationController->levelPack;
                 if(levelPack) {
@@ -88,7 +88,7 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
             } });
 
         // Set Icon of the Button and scale it to fit the Button
-        auto *image = QuestUI::BeatSaberUI::CreateImage(button->get_transform(), QuestUI::BeatSaberUI::Base64ToSprite(diceIcon));
+        auto *image = QuestUI::BeatSaberUI::CreateImage(button->get_transform(), QuestUI::BeatSaberUI::Base64ToSprite(diceIcon), {}, {});
         image->get_rectTransform()->set_localScale({0.65f, 0.65f, 1.0f});
 
         getLogger().info("Created Random Song Button");
