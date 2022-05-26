@@ -2,7 +2,7 @@
 
 Pick a random song!
 
-An Oculus Quest mod that simply adds a button to select a random song.
+A Beat Saber mod that simply adds a button to select a random song.
 
 ![Image of the UI](ReadMeAssets/UI.jpg)
 
