@@ -15,15 +15,16 @@ Logger &getLogger()
     return *logger;
 }
 
-MAKE_HOOK_MATCH(SoloFreePlayFlowCoordinatorHook, &HMUI::FlowCoordinator::PresentFlowCoordinator, void, HMUI::FlowCoordinator *self, HMUI::FlowCoordinator *flowCoordinator, System::Action *finishedCallback, HMUI::ViewController::AnimationDirection animationDirection, bool immediately, bool replaceTopViewController)
+MAKE_HOOK_MATCH(PresentFlowCoordinatorHook, &HMUI::FlowCoordinator::PresentFlowCoordinator, void, HMUI::FlowCoordinator *self, HMUI::FlowCoordinator *flowCoordinator, System::Action *finishedCallback, HMUI::ViewController::AnimationDirection animationDirection, bool immediately, bool replaceTopViewController)
 {
     // Base Call
-    SoloFreePlayFlowCoordinatorHook(self, flowCoordinator, finishedCallback, animationDirection, immediately, replaceTopViewController);
+    PresentFlowCoordinatorHook(self, flowCoordinator, finishedCallback, animationDirection, immediately, replaceTopViewController);
 
-    // Save Controller for later use in button onClick
-    if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(flowCoordinator))
+    // Button only enabled in Solo and Party
+    if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(flowCoordinator) || il2cpp_utils::try_cast<GlobalNamespace::PartyFreePlayFlowCoordinator>(flowCoordinator))
     {
-        auto *ActuallySoloFreePlayFlowCoordinator = (GlobalNamespace::SoloFreePlayFlowCoordinator *)flowCoordinator;
+        // Save Controller for later use in button onClick
+        auto *ActuallySoloFreePlayFlowCoordinator = (GlobalNamespace::LevelSelectionFlowCoordinator *)flowCoordinator;
         levelCollectionNavigationController = ActuallySoloFreePlayFlowCoordinator->levelSelectionNavigationController->levelCollectionNavigationController;
         filteringNavigationController = ActuallySoloFreePlayFlowCoordinator->levelSelectionNavigationController->levelFilteringNavigationController;
         
@@ -112,7 +113,7 @@ extern "C" void load()
     il2cpp_functions::Init();
 
     getLogger().info("Installing hooks...");
-    INSTALL_HOOK(getLogger(), SoloFreePlayFlowCoordinatorHook);
+    INSTALL_HOOK(getLogger(), PresentFlowCoordinatorHook);
     INSTALL_HOOK(getLogger(), GamePlaySetUpHook);
     getLogger().info("Installed all hooks!");
 }
