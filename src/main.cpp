@@ -24,9 +24,9 @@ MAKE_HOOK_MATCH(PresentFlowCoordinatorHook, &HMUI::FlowCoordinator::PresentFlowC
     if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(flowCoordinator) || il2cpp_utils::try_cast<GlobalNamespace::PartyFreePlayFlowCoordinator>(flowCoordinator))
     {
         // Save Controller for later use in button onClick
-        auto *ActuallySoloFreePlayFlowCoordinator = (GlobalNamespace::LevelSelectionFlowCoordinator *)flowCoordinator;
-        levelCollectionNavigationController = ActuallySoloFreePlayFlowCoordinator->levelSelectionNavigationController->levelCollectionNavigationController;
-        filteringNavigationController = ActuallySoloFreePlayFlowCoordinator->levelSelectionNavigationController->levelFilteringNavigationController;
+        auto *LevelSelectionFlowCoordinatorInstance = (GlobalNamespace::LevelSelectionFlowCoordinator *)flowCoordinator;
+        levelCollectionNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelCollectionNavigationController;
+        filteringNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelFilteringNavigationController;
         
         if(button) {
             button->get_gameObject()->set_active(true);
