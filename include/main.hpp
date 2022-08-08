@@ -25,6 +25,10 @@
 #include "GlobalNamespace/IAnnotatedBeatmapLevelCollection.hpp"
 #include "GlobalNamespace/LevelSearchViewController.hpp"
 #include "GlobalNamespace/LevelSearchViewController_BeatmapLevelPackCollection.hpp"
+#include "GlobalNamespace/OculusVRHelper.hpp"
+#include "GlobalNamespace/VRController.hpp"
+#include "GlobalNamespace/OVRInput.hpp"
+#include "GlobalNamespace/OVRInput_Button.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "HMUI/ViewController_AnimationDirection.hpp"
 #include "UnityEngine/UI/Button.hpp"
@@ -43,6 +47,10 @@ Logger& getLogger();
 
 // Static Variables
 static ModInfo modInfo; // Stores the ID and version of our mod, and is sent to the modloader upon startup
-static GlobalNamespace::LevelCollectionNavigationController *levelCollectionNavigationController;
-static GlobalNamespace::LevelFilteringNavigationController *filteringNavigationController;
+// TODO Look into deleting pointers when exiting instead of SafePtr, to avoid Memory Leak
+static SafePtr<GlobalNamespace::LevelCollectionNavigationController> levelCollectionNavigationController;
+static SafePtr<GlobalNamespace::LevelFilteringNavigationController> filteringNavigationController;
 static UnityEngine::UI::Button *button;
+static bool pressedEventAllreadyRun = false;
+
+void selectRandomSong();
