@@ -31,15 +31,21 @@
 #include "GlobalNamespace/OVRInput_Button.hpp"
 #include "HMUI/CurvedTextMeshPro.hpp"
 #include "HMUI/ViewController_AnimationDirection.hpp"
+#include "HMUI/Touchable.hpp"
+#include "config-utils/shared/config-utils.hpp"
 #include "UnityEngine/UI/Button.hpp"
 #include "UnityEngine/Vector2.hpp"
 #include "questui/shared/BeatSaberUI.hpp"
+#include "questui/shared/QuestUI.hpp"
 #include "System/Array.hpp"
 #include "TMPro/TextMeshProUGUI.hpp"
+#include <vector>
 #include <random>
 
 // Icons
 #include "icons.hpp"
+#include "config.hpp"
+#include "SettingsVC.hpp"
 
 // Define these functions here so that we can easily read configuration and log information from other files
 Configuration& getConfig();
@@ -47,6 +53,7 @@ Logger& getLogger();
 
 // Static Variables
 static ModInfo modInfo; // Stores the ID and version of our mod, and is sent to the modloader upon startup
+
 // TODO Look into deleting pointers when exiting instead of SafePtr, to avoid Memory Leak
 static SafePtr<GlobalNamespace::LevelCollectionNavigationController> levelCollectionNavigationController;
 static SafePtr<GlobalNamespace::LevelFilteringNavigationController> filteringNavigationController;

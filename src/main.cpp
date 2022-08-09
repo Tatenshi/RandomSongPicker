@@ -71,16 +71,28 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
 MAKE_HOOK_MATCH(FixedUpdateHook, &GlobalNamespace::OculusVRHelper::FixedUpdate, void, GlobalNamespace::OculusVRHelper* self){
     FixedUpdateHook(self);
 
-    // TODO Make configurable over config utils (all Buttons available)
-    bool AButtonPressed = GlobalNamespace::OVRInput::Get(GlobalNamespace::OVRInput::Button::One, GlobalNamespace::OVRInput::Controller::RTouch);
-    if(AButtonPressed){
-        if(!pressedEventAllreadyRun) {
-            selectRandomSong();
-            pressedEventAllreadyRun = true;
+    // 0 Means nothing is assigned, and we dont need to do anything
+    int useButtonValue = getModConfig().UseButton.GetValue();
+    if(useButtonValue > 0){
+        // Determine if we need the Right or Left Controller (Right is 2 Left is One)
+        // Definition from: GlobalNamespace::OVRInput::Controller::RTouch
+        int controllerIndex = useButtonValue > 2 ? 1 : 2;
+
+        // Here we correct the Index for direct Usage as Input for OVRInput.Get
+        // After this line the Primary Button A/X (1/3 in Config) is 0 and the Secondary Button (2/4 in Config) is 1
+        // Source: https://developer.oculus.com/documentation/unity/unity-ovrinput/
+        useButtonValue = ((useButtonValue - 1) % 2) + 1;
+
+        bool buttonPressed = GlobalNamespace::OVRInput::Get(useButtonValue, controllerIndex);
+        if(buttonPressed){
+            if(!pressedEventAllreadyRun) {
+                selectRandomSong();
+                pressedEventAllreadyRun = true;
+            }
         }
-    }
-    else {
-        pressedEventAllreadyRun = false;
+        else {
+            pressedEventAllreadyRun = false;
+        }
     }
 }
 
@@ -121,6 +133,9 @@ void selectRandomSong() {
     }
 }
 
+// Define Config
+DEFINE_CONFIG(ModConfig);
+
 // Called at the early stages of game loading
 extern "C" void setup(ModInfo &info)
 {
@@ -135,8 +150,15 @@ extern "C" void setup(ModInfo &info)
 // Called later on in the game loading - a good time to install function hooks
 extern "C" void load()
 {
+    // Init things
+    getModConfig().Init(modInfo);
     il2cpp_functions::Init();
+    QuestUI::Init();
 
+    // Regsiter our Settings
+    QuestUI::Register::RegisterModSettingsViewController(modInfo, DidActivate);
+
+    // Install Hooks
     getLogger().info("Installing hooks...");
     INSTALL_HOOK(getLogger(), PresentFlowCoordinatorHook);
     INSTALL_HOOK(getLogger(), GamePlaySetUpHook);
