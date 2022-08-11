@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "Settings/SettingsVC.hpp"
 
 std::vector<std::string> buttonOptions = {
     "None",
@@ -24,7 +24,7 @@ void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToH
         }
 
         // Create actual Dropdown
-        QuestUI::BeatSaberUI::CreateDropdown(container->get_transform(), "ControllerButton Binding", "None", buttonOptionsWrapper, [](auto value) {
+        QuestUI::BeatSaberUI::CreateDropdown(container->get_transform(), "ControllerButton Binding", buttonOptionsWrapper[getModConfig().UseButton.GetValue()], buttonOptionsWrapper, [](auto value) {
 
             // Find Index of selected Element
             int index = std::find(buttonOptions.begin(), buttonOptions.end(), value) - buttonOptions.begin();

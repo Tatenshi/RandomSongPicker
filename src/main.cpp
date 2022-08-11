@@ -1,20 +1,5 @@
 #include "main.hpp"
 
-// Loads the config from disk using our modInfo, then returns it for use
-Configuration &getConfig()
-{
-    static Configuration config(modInfo);
-    config.Load();
-    return config;
-}
-
-// Returns a logger, useful for printing debug messages
-Logger &getLogger()
-{
-    static Logger *logger = new Logger(modInfo);
-    return *logger;
-}
-
 MAKE_HOOK_MATCH(PresentFlowCoordinatorHook, &HMUI::FlowCoordinator::PresentFlowCoordinator, void, HMUI::FlowCoordinator *self, HMUI::FlowCoordinator *flowCoordinator, System::Action *finishedCallback, HMUI::ViewController::AnimationDirection animationDirection, bool immediately, bool replaceTopViewController)
 {
     // Base Call
@@ -25,8 +10,8 @@ MAKE_HOOK_MATCH(PresentFlowCoordinatorHook, &HMUI::FlowCoordinator::PresentFlowC
     {
         // Save Controller for later use in button onClick
         auto *LevelSelectionFlowCoordinatorInstance = (GlobalNamespace::LevelSelectionFlowCoordinator *)flowCoordinator;
-        levelCollectionNavigationController.emplace(LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelCollectionNavigationController);
-        filteringNavigationController.emplace(LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelFilteringNavigationController);
+        RandomSongImpl::levelCollectionNavigationController.emplace(LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelCollectionNavigationController);
+        RandomSongImpl::filteringNavigationController.emplace(LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelFilteringNavigationController);
         
         if(button) {
             button->get_gameObject()->set_active(true);
@@ -45,6 +30,10 @@ MAKE_HOOK_MATCH(PresentFlowCoordinatorHook, &HMUI::FlowCoordinator::PresentFlowC
         else {
             getLogger().info("Wanted to disable Random Song Button, but button was null");
         }
+
+        // Either way we dont want to hold the old NavigationController references, so that they can be freed
+        RandomSongImpl::levelCollectionNavigationController.emplace(nullptr);
+        RandomSongImpl::filteringNavigationController.emplace(nullptr);
     }
 }
 
@@ -56,9 +45,7 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
     if (firstActivation)
     {
         // Create Randomselection Button
-        button = QuestUI::BeatSaberUI::CreateUIButton(self->get_transform(), "", UnityEngine::Vector2(56.0f, 0), UnityEngine::Vector2(11.0f, 11.0f), []() {
-            selectRandomSong();
-            });
+        button = QuestUI::BeatSaberUI::CreateUIButton(self->get_transform(), "", UnityEngine::Vector2(56.0f, 0), UnityEngine::Vector2(11.0f, 11.0f), RandomSongImpl::selectRandomSong);
 
         // Set Icon of the Button and scale it to fit the Button
         auto *image = QuestUI::BeatSaberUI::CreateImage(button->get_transform(), QuestUI::BeatSaberUI::Base64ToSprite(diceIcon));
@@ -86,49 +73,12 @@ MAKE_HOOK_MATCH(FixedUpdateHook, &GlobalNamespace::OculusVRHelper::FixedUpdate, 
         bool buttonPressed = GlobalNamespace::OVRInput::Get(useButtonValue, controllerIndex);
         if(buttonPressed){
             if(!pressedEventAllreadyRun) {
-                selectRandomSong();
+                RandomSongImpl::selectRandomSong();
                 pressedEventAllreadyRun = true;
             }
         }
         else {
             pressedEventAllreadyRun = false;
-        }
-    }
-}
-
-// TODO Extract to own Class & File
-void selectRandomSong() {
-    // Only do Things, if we also have the necessary References
-    if (levelCollectionNavigationController && filteringNavigationController)
-    {
-        // Get Array of all beatmaps that the user currently sees
-        ArrayW<GlobalNamespace::IPreviewBeatmapLevel *> allmapsArray;
-
-        auto *levelPack = levelCollectionNavigationController->levelPack;
-        if (levelPack)
-        {
-            allmapsArray = il2cpp_utils::cast<GlobalNamespace::IAnnotatedBeatmapLevelCollection>(levelPack)->get_beatmapLevelCollection()->get_beatmapLevels();
-            getLogger().info("Acquired Maps using CollectionNavigationView");
-        }
-        else
-        {
-            allmapsArray = filteringNavigationController->levelSearchViewController->beatmapLevelPackCollection->get_beatmapLevelCollection()->get_beatmapLevels();
-            getLogger().info("Acquired Maps using SearchView");
-        }
-
-        // Calculate Upper Bound for rand
-        int max = allmapsArray->Length();
-        getLogger().info("Acquired BeatMapCount");
-
-        if (max > 0)
-        {
-            // Select a random level from 0 to max (exclusive)
-            levelCollectionNavigationController->SelectLevel(allmapsArray->get(rand() % max));
-            getLogger().info("Selected level");
-        }
-        else
-        {
-            getLogger().info("No level found to select");
         }
     }
 }
