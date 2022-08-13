@@ -10,8 +10,8 @@ MAKE_HOOK_MATCH(PresentFlowCoordinatorHook, &HMUI::FlowCoordinator::PresentFlowC
     {
         // Save Controller for later use in button onClick
         auto *LevelSelectionFlowCoordinatorInstance = (GlobalNamespace::LevelSelectionFlowCoordinator *)flowCoordinator;
-        RandomSongImpl::levelCollectionNavigationController.emplace(LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelCollectionNavigationController);
-        RandomSongImpl::filteringNavigationController.emplace(LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelFilteringNavigationController);
+        RandomSongImpl::levelCollectionNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelCollectionNavigationController;
+        RandomSongImpl::filteringNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelFilteringNavigationController;
         
         if(button) {
             button->get_gameObject()->set_active(true);

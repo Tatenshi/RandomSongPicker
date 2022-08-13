@@ -15,8 +15,8 @@
 
 namespace RandomSongImpl {
 
-    extern SafePtr<GlobalNamespace::LevelCollectionNavigationController> levelCollectionNavigationController;
-    extern SafePtr<GlobalNamespace::LevelFilteringNavigationController> filteringNavigationController;
+    extern SafePtrUnity<GlobalNamespace::LevelCollectionNavigationController> levelCollectionNavigationController;
+    extern SafePtrUnity<GlobalNamespace::LevelFilteringNavigationController> filteringNavigationController;
 
     void selectRandomSong();
 }
