@@ -1,15 +1,15 @@
 #include "main.hpp"
 
-MAKE_HOOK_MATCH(PresentFlowCoordinatorHook, &HMUI::FlowCoordinator::PresentFlowCoordinator, void, HMUI::FlowCoordinator *self, HMUI::FlowCoordinator *flowCoordinator, System::Action *finishedCallback, HMUI::ViewController::AnimationDirection animationDirection, bool immediately, bool replaceTopViewController)
+MAKE_HOOK_MATCH(ActivateFlowCoordinatorHook, &HMUI::FlowCoordinator::Activate, void, HMUI::FlowCoordinator *self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
 {
     // Base Call
-    PresentFlowCoordinatorHook(self, flowCoordinator, finishedCallback, animationDirection, immediately, replaceTopViewController);
+    ActivateFlowCoordinatorHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
 
     // Button only enabled in Solo and Party
-    if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(flowCoordinator) || il2cpp_utils::try_cast<GlobalNamespace::PartyFreePlayFlowCoordinator>(flowCoordinator))
+    if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(self) || il2cpp_utils::try_cast<GlobalNamespace::PartyFreePlayFlowCoordinator>(self))
     {
         // Save Controller for later use in button onClick
-        auto *LevelSelectionFlowCoordinatorInstance = (GlobalNamespace::LevelSelectionFlowCoordinator *)flowCoordinator;
+        auto *LevelSelectionFlowCoordinatorInstance = (GlobalNamespace::LevelSelectionFlowCoordinator *)self;
         RandomSongImpl::levelCollectionNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelCollectionNavigationController;
         RandomSongImpl::filteringNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelFilteringNavigationController;
         
@@ -110,7 +110,7 @@ extern "C" void load()
 
     // Install Hooks
     getLogger().info("Installing hooks...");
-    INSTALL_HOOK(getLogger(), PresentFlowCoordinatorHook);
+    INSTALL_HOOK(getLogger(), ActivateFlowCoordinatorHook);
     INSTALL_HOOK(getLogger(), GamePlaySetUpHook);
     INSTALL_HOOK(getLogger(), FixedUpdateHook);
     getLogger().info("Installed all hooks!");
