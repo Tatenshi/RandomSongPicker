@@ -6,7 +6,7 @@
   "author": "Tatenshi",
   "version": "0.2.1",
   "packageId": "com.beatgames.beatsaber",
-  "packageVersion": "1.24.0",
+  "packageVersion": "1.25.1",
   "coverImage": "cover.jpg",
   "description": "Adds a button, that picks a random song out of the current list",
   "dependencies": [],
