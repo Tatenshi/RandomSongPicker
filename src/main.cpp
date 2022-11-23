@@ -12,28 +12,44 @@ MAKE_HOOK_MATCH(ActivateFlowCoordinatorHook, &HMUI::FlowCoordinator::Activate, v
         auto *LevelSelectionFlowCoordinatorInstance = (GlobalNamespace::LevelSelectionFlowCoordinator *)self;
         RandomSongImpl::levelCollectionNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelCollectionNavigationController;
         RandomSongImpl::filteringNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelFilteringNavigationController;
-        
-        if(button) {
-            button->get_gameObject()->set_active(true);
-            getLogger().info("Activated Random Song Button");
-        }
-        else {
-            getLogger().info("Wanted to activated Random Song Button, but button was null");
-        }
     }
     else
     {
-        if(button) {
-            button->get_gameObject()->set_active(false);
-            getLogger().info("Disabled Random Song Button");
-        }
-        else {
-            getLogger().info("Wanted to disable Random Song Button, but button was null");
-        }
-
-        // Either way we dont want to hold the old NavigationController references, so that they can be freed
+        // We dont want to hold the old NavigationController references, so that they can be freed
         RandomSongImpl::levelCollectionNavigationController.emplace(nullptr);
         RandomSongImpl::filteringNavigationController.emplace(nullptr);
+    }
+}
+
+MAKE_HOOK_MATCH(LevelSelectionNavigationControllerDidActivate, &GlobalNamespace::LevelSelectionNavigationController::DidActivate, void, GlobalNamespace::LevelSelectionNavigationController *self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
+{
+    // Base Call
+    LevelSelectionNavigationControllerDidActivate(self, firstActivation, addedToHierarchy, screenSystemEnabling);
+
+    if(button) 
+    {
+        button->get_gameObject()->SetActive(true);
+        getLogger().info("Activated Random Song Button");
+    }
+    else
+    {
+        getLogger().info("Wanted to activated Random Song Button, but button was null");
+    }
+}
+
+MAKE_HOOK_MATCH(LevelSelectionNavigationControllerDidDeactivate, &GlobalNamespace::LevelSelectionNavigationController::DidDeactivate, void, GlobalNamespace::LevelSelectionNavigationController *self, bool removedFromHierarchy, bool screenSystemDisabling)
+{
+    // Base Call
+    LevelSelectionNavigationControllerDidDeactivate(self, removedFromHierarchy, screenSystemDisabling);
+
+    if(button) 
+    {
+        button->get_gameObject()->SetActive(false);
+        getLogger().info("Activated Random Song Button");
+    }
+    else
+    {
+        getLogger().info("Wanted to activated Random Song Button, but button was null");
     }
 }
 
@@ -50,6 +66,8 @@ MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController
         // Set Icon of the Button and scale it to fit the Button
         auto *image = QuestUI::BeatSaberUI::CreateImage(button->get_transform(), QuestUI::BeatSaberUI::Base64ToSprite(diceIcon));
         image->get_rectTransform()->set_localScale({0.65f, 0.65f, 1.0f});
+
+        button->get_gameObject()->SetActive(false);
 
         getLogger().info("Created Random Song Button");
     }
@@ -113,5 +131,7 @@ extern "C" void load()
     INSTALL_HOOK(getLogger(), ActivateFlowCoordinatorHook);
     INSTALL_HOOK(getLogger(), GamePlaySetUpHook);
     INSTALL_HOOK(getLogger(), FixedUpdateHook);
+    INSTALL_HOOK(getLogger(), LevelSelectionNavigationControllerDidActivate);
+    INSTALL_HOOK(getLogger(), LevelSelectionNavigationControllerDidDeactivate);
     getLogger().info("Installed all hooks!");
 }
