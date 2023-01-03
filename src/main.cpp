@@ -101,9 +101,6 @@ MAKE_HOOK_MATCH(FixedUpdateHook, &GlobalNamespace::OculusVRHelper::FixedUpdate, 
     }
 }
 
-// Define Config
-DEFINE_CONFIG(ModConfig);
-
 // Called at the early stages of game loading
 extern "C" void setup(ModInfo &info)
 {
