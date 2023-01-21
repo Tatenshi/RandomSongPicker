@@ -4,9 +4,9 @@ MAKE_HOOK_MATCH(ActivateFlowCoordinatorHook, &HMUI::FlowCoordinator::Activate, v
 {
     // Base Call
     ActivateFlowCoordinatorHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
-
+	
     // Button only enabled in Solo and Party
-    if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(self) || il2cpp_utils::try_cast<GlobalNamespace::PartyFreePlayFlowCoordinator>(self))
+    if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(self) || il2cpp_utils::try_cast<GlobalNamespace::PartyFreePlayFlowCoordinator>(self) || il2cpp_utils::try_cast<GlobalNamespace/MultiplayerLevelSelectionFlowCoordinator>(self))
     {
         // Save Controller for later use in button onClick
         auto *LevelSelectionFlowCoordinatorInstance = (GlobalNamespace::LevelSelectionFlowCoordinator *)self;
