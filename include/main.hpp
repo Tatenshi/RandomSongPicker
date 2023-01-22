@@ -9,7 +9,6 @@
 
 // Includes for the functionality of the mod
 #include "GlobalNamespace/MainMenuViewController.hpp"
-#include "GlobalNamespace/GameplaySetupViewController.hpp"
 #include "GlobalNamespace/LevelSelectionNavigationController.hpp"
 #include "GlobalNamespace/SoloFreePlayFlowCoordinator.hpp"
 #include "GlobalNamespace/PartyFreePlayFlowCoordinator.hpp"
