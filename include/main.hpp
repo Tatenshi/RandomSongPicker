@@ -9,10 +9,10 @@
 
 // Includes for the functionality of the mod
 #include "GlobalNamespace/MainMenuViewController.hpp"
-#include "GlobalNamespace/GameplaySetupViewController.hpp"
 #include "GlobalNamespace/LevelSelectionNavigationController.hpp"
 #include "GlobalNamespace/SoloFreePlayFlowCoordinator.hpp"
 #include "GlobalNamespace/PartyFreePlayFlowCoordinator.hpp"
+#include "GlobalNamespace/MultiplayerLevelSelectionFlowCoordinator.hpp"
 #include "GlobalNamespace/OculusVRHelper.hpp"
 #include "GlobalNamespace/VRController.hpp"
 #include "GlobalNamespace/OVRInput.hpp"

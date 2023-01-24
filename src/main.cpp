@@ -4,9 +4,9 @@ MAKE_HOOK_MATCH(ActivateFlowCoordinatorHook, &HMUI::FlowCoordinator::Activate, v
 {
     // Base Call
     ActivateFlowCoordinatorHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
-
+	
     // Button only enabled in Solo and Party
-    if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(self) || il2cpp_utils::try_cast<GlobalNamespace::PartyFreePlayFlowCoordinator>(self))
+    if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(self) || il2cpp_utils::try_cast<GlobalNamespace::PartyFreePlayFlowCoordinator>(self) || il2cpp_utils::try_cast<GlobalNamespace::MultiplayerLevelSelectionFlowCoordinator>(self))
     {
         // Save Controller for later use in button onClick
         auto *LevelSelectionFlowCoordinatorInstance = (GlobalNamespace::LevelSelectionFlowCoordinator *)self;
@@ -25,6 +25,19 @@ MAKE_HOOK_MATCH(LevelSelectionNavigationControllerDidActivate, &GlobalNamespace:
 {
     // Base Call
     LevelSelectionNavigationControllerDidActivate(self, firstActivation, addedToHierarchy, screenSystemEnabling);
+
+    if (firstActivation)
+    {
+        // Create Randomselection Button
+        button = QuestUI::BeatSaberUI::CreateUIButton(self->get_transform(), "", UnityEngine::Vector2(-68, 30), UnityEngine::Vector2(9.0f, 9.0f), RandomSongImpl::selectRandomSong);
+
+        // Set Icon of the Button and scale it to fit the Button
+        auto *image = QuestUI::BeatSaberUI::CreateImage(button->get_transform(), QuestUI::BeatSaberUI::Base64ToSprite(diceIcon));
+        image->get_rectTransform()->set_localScale({0.65f, 0.65f, 1.0f});
+
+        getLogger().info("Created Random Song Button");
+        return;
+    }
 
     if(button) 
     {
@@ -50,26 +63,6 @@ MAKE_HOOK_MATCH(LevelSelectionNavigationControllerDidDeactivate, &GlobalNamespac
     else
     {
         getLogger().info("Wanted to activated Random Song Button, but button was null");
-    }
-}
-
-MAKE_HOOK_MATCH(GamePlaySetUpHook, &GlobalNamespace::GameplaySetupViewController::DidActivate, void, GlobalNamespace::GameplaySetupViewController *self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
-{
-    // Base Call
-    GamePlaySetUpHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
-
-    if (firstActivation)
-    {
-        // Create Randomselection Button
-        button = QuestUI::BeatSaberUI::CreateUIButton(self->get_transform(), "", UnityEngine::Vector2(56.0f, 0), UnityEngine::Vector2(11.0f, 11.0f), RandomSongImpl::selectRandomSong);
-
-        // Set Icon of the Button and scale it to fit the Button
-        auto *image = QuestUI::BeatSaberUI::CreateImage(button->get_transform(), QuestUI::BeatSaberUI::Base64ToSprite(diceIcon));
-        image->get_rectTransform()->set_localScale({0.65f, 0.65f, 1.0f});
-
-        button->get_gameObject()->SetActive(false);
-
-        getLogger().info("Created Random Song Button");
     }
 }
 
@@ -126,7 +119,6 @@ extern "C" void load()
     // Install Hooks
     getLogger().info("Installing hooks...");
     INSTALL_HOOK(getLogger(), ActivateFlowCoordinatorHook);
-    INSTALL_HOOK(getLogger(), GamePlaySetUpHook);
     INSTALL_HOOK(getLogger(), FixedUpdateHook);
     INSTALL_HOOK(getLogger(), LevelSelectionNavigationControllerDidActivate);
     INSTALL_HOOK(getLogger(), LevelSelectionNavigationControllerDidDeactivate);
