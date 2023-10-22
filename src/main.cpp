@@ -29,7 +29,7 @@ MAKE_HOOK_MATCH(LevelSelectionNavigationControllerDidActivate, &GlobalNamespace:
     if (firstActivation)
     {
         // Create Randomselection Button
-        button = QuestUI::BeatSaberUI::CreateUIButton(self->get_transform(), "", UnityEngine::Vector2(-68, 30), UnityEngine::Vector2(9.0f, 9.0f), RandomSongImpl::selectRandomSong);
+        button = QuestUI::BeatSaberUI::CreateUIButton(self->get_transform(), "", UnityEngine::Vector2(-70, 30), UnityEngine::Vector2(9.0f, 9.0f), RandomSongImpl::selectRandomSong);
 
         // Set Icon of the Button and scale it to fit the Button
         auto *image = QuestUI::BeatSaberUI::CreateImage(button->get_transform(), QuestUI::BeatSaberUI::Base64ToSprite(diceIcon));

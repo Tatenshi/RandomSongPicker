@@ -44,7 +44,12 @@
       "id": "config-utils",
       "versionRange": "^1.0.1",
       "additionalData": {}
+    },
+    {
+      "id": "songloader",
+      "versionRange": "^0.10.17",
+      "additionalData": {}
     }
   ],
-  "additionalData": {}
+  "workspace": null
 }

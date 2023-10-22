@@ -11,6 +11,10 @@
 #include "GlobalNamespace/LevelSearchViewController.hpp"
 #include "GlobalNamespace/LevelSearchViewController_BeatmapLevelPackCollection.hpp"
 
+#include "songloader/shared/API.hpp"
+
+#include <random>
+
 #include "logger.hpp"
 
 namespace RandomSongImpl {

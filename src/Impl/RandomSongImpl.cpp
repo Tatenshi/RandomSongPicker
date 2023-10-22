@@ -4,9 +4,17 @@ namespace RandomSongImpl {
 
     SafePtrUnity<GlobalNamespace::LevelCollectionNavigationController> levelCollectionNavigationController;
     SafePtrUnity<GlobalNamespace::LevelFilteringNavigationController> filteringNavigationController;
+
+    std::default_random_engine generator;
     
     void selectRandomSong()
     {
+        // We cant do anything, when songs arent loaded yet
+        if(!RuntimeSongLoader::API::HasLoadedSongs())
+        {
+            return;
+        }
+
         // Only do Things, if we also have the necessary References
         if (levelCollectionNavigationController && filteringNavigationController)
         {
@@ -26,14 +34,21 @@ namespace RandomSongImpl {
             }
 
             // Calculate Upper Bound for rand
-            int max = allmapsArray->Length();
-            getLogger().info("Acquired BeatMapCount");
+            int max = allmapsArray->Length() - 1;
+            getLogger().info("Acquired BeatMapCount: %i", max);
 
             if (max > 0)
             {
                 // Select a random level from 0 to max (exclusive)
-                levelCollectionNavigationController->SelectLevel(allmapsArray->get(rand() % max));
-                getLogger().info("Selected level");
+                std::uniform_int_distribution<int> distribution(0, max);
+                int selectedLevel = distribution(generator);
+                auto map = allmapsArray->get(selectedLevel);
+                // Select the found map. In combination with RecentlyPlayed this Controller is null and would nullref, so we just do nothing?
+                if(levelCollectionNavigationController->levelCollectionViewController != NULL)
+                {
+                    levelCollectionNavigationController->SelectLevel(map);
+                }
+                getLogger().info("Selected level: %i", selectedLevel);
             }
             else
             {
