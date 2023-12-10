@@ -17,12 +17,17 @@
     {
       "version": "^0.15.23",
       "id": "custom-types",
-      "downloadIfMissing": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.23/CustomTypes.qmod"
+      "downloadIfMissing": "https://github.com/sc2ad/Il2CppQuestTypePatching/releases/download/v0.15.24/CustomTypes.qmod"
     },
     {
       "version": "^0.17.11",
       "id": "questui",
-      "downloadIfMissing": "https://github.com/darknight1050/QuestUI/releases/download/v0.17.11/QuestUI.qmod"
+      "downloadIfMissing": "https://github.com/darknight1050/QuestUI/releases/download/v0.17.12/QuestUI.qmod"
+    },
+    {
+      "version": "^0.10.17",
+      "id": "songloader",
+      "downloadIfMissing": "https://github.com/darknight1050/SongLoader/releases/download/v0.10.17/SongLoader.qmod"
     }
   ],
   "modFiles": [

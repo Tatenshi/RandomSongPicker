@@ -5,7 +5,7 @@ namespace RandomSongImpl {
     SafePtrUnity<GlobalNamespace::LevelCollectionNavigationController> levelCollectionNavigationController;
     SafePtrUnity<GlobalNamespace::LevelFilteringNavigationController> filteringNavigationController;
 
-    std::default_random_engine generator;
+    std::mt19937 generator(time(nullptr));
     
     void selectRandomSong()
     {
