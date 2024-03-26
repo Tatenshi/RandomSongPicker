@@ -1,6 +1,6 @@
 #include "Settings/SettingsVC.hpp"
 
-std::vector<std::string> buttonOptions = {
+std::vector<std::string_view> buttonOptions = {
     "None",
     "A",
     "B",
@@ -14,17 +14,10 @@ void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToH
         self->get_gameObject()->AddComponent<HMUI::Touchable*>();
 
         // Create Container
-        auto* container = QuestUI::BeatSaberUI::CreateScrollableSettingsContainer(self->get_transform());
-
-        // Create StringWrapper Vector with Content of buttonOptions
-        // We cant create it directly, as StringW is not designed for static use
-        std::vector<StringW> buttonOptionsWrapper = {};
-        for (auto option : buttonOptions) {
-            buttonOptionsWrapper.emplace_back(option);
-        }
+        auto* container = BSML::Lite::CreateScrollableSettingsContainer(self->get_transform());
 
         // Create actual Dropdown
-        QuestUI::BeatSaberUI::CreateDropdown(container->get_transform(), "ControllerButton Binding", buttonOptionsWrapper[getModConfig().UseButton.GetValue()], buttonOptionsWrapper, [](auto value) {
+        BSML::Lite::CreateDropdown(container->get_transform(), "ControllerButton Binding", buttonOptions[getModConfig().UseButton.GetValue()], buttonOptions, [](StringW value) {
 
             // Find Index of selected Element
             int index = std::find(buttonOptions.begin(), buttonOptions.end(), value) - buttonOptions.begin();

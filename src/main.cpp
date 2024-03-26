@@ -10,8 +10,8 @@ MAKE_HOOK_MATCH(ActivateFlowCoordinatorHook, &HMUI::FlowCoordinator::Activate, v
     {
         // Save Controller for later use in button onClick
         auto *LevelSelectionFlowCoordinatorInstance = (GlobalNamespace::LevelSelectionFlowCoordinator *)self;
-        RandomSongImpl::levelCollectionNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelCollectionNavigationController;
-        RandomSongImpl::filteringNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->levelFilteringNavigationController;
+        RandomSongImpl::levelCollectionNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->_levelCollectionNavigationController;
+        RandomSongImpl::filteringNavigationController = LevelSelectionFlowCoordinatorInstance->levelSelectionNavigationController->_levelFilteringNavigationController;
     }
     else
     {
@@ -29,10 +29,21 @@ MAKE_HOOK_MATCH(LevelSelectionNavigationControllerDidActivate, &GlobalNamespace:
     if (firstActivation)
     {
         // Create Randomselection Button
-        button = QuestUI::BeatSaberUI::CreateUIButton(self->get_transform(), "", UnityEngine::Vector2(-70, 30), UnityEngine::Vector2(9.0f, 9.0f), RandomSongImpl::selectRandomSong);
+        UnityEngine::Vector2 sizeDelta = {10, 10};
+        button = BSML::Lite::CreateUIButton(self->get_transform(), "", {10, -10}, sizeDelta, RandomSongImpl::selectRandomSong);
+        UnityEngine::Object::DestroyImmediate(button->get_gameObject()->GetComponent<UnityEngine::UI::LayoutElement*>());
+        UnityEngine::UI::LayoutElement* layoutElement = button->get_gameObject()->GetComponent<UnityEngine::UI::LayoutElement*>();
+        if(!layoutElement)
+            layoutElement = button->get_gameObject()->AddComponent<UnityEngine::UI::LayoutElement*>();
+        layoutElement->set_minWidth(sizeDelta.x);
+        layoutElement->set_minHeight(sizeDelta.y);
+        layoutElement->set_preferredWidth(sizeDelta.x);
+        layoutElement->set_preferredHeight(sizeDelta.y);
+        layoutElement->set_flexibleWidth(sizeDelta.x);
+        layoutElement->set_flexibleHeight(sizeDelta.y);
 
         // Set Icon of the Button and scale it to fit the Button
-        auto *image = QuestUI::BeatSaberUI::CreateImage(button->get_transform(), QuestUI::BeatSaberUI::Base64ToSprite(diceIcon));
+        auto *image = BSML::Lite::CreateImage(button->get_transform(), BSML::Lite::Base64ToSprite(diceIcon));
         image->get_rectTransform()->set_localScale({0.65f, 0.65f, 1.0f});
 
         getLogger().info("Created Random Song Button");
@@ -81,7 +92,7 @@ MAKE_HOOK_MATCH(FixedUpdateHook, &GlobalNamespace::OculusVRHelper::FixedUpdate, 
         // Source: https://developer.oculus.com/documentation/unity/unity-ovrinput/
         useButtonValue = ((useButtonValue - 1) % 2) + 1;
 
-        bool buttonPressed = GlobalNamespace::OVRInput::Get(useButtonValue, controllerIndex);
+        bool buttonPressed = GlobalNamespace::OVRInput::Get(GlobalNamespace::__OVRInput__Button(useButtonValue), controllerIndex);
         if(buttonPressed){
             if(!pressedEventAllreadyRun) {
                 RandomSongImpl::selectRandomSong();
@@ -94,33 +105,24 @@ MAKE_HOOK_MATCH(FixedUpdateHook, &GlobalNamespace::OculusVRHelper::FixedUpdate, 
     }
 }
 
-// Called at the early stages of game loading
-extern "C" void setup(ModInfo &info)
-{
-    info.id = MOD_ID;
-    info.version = VERSION;
-    modInfo = info;
-
-    getConfig().Load(); // Load the config file
-    getLogger().info("Completed setup!");
-}
-
 // Called later on in the game loading - a good time to install function hooks
-extern "C" void load()
+extern "C" __attribute__((visibility("default"))) void late_load()
 {
     // Init things
     getModConfig().Init(modInfo);
     il2cpp_functions::Init();
-    QuestUI::Init();
+
+    getLogger().info("Completed setup!");
 
     // Regsiter our Settings
-    QuestUI::Register::RegisterModSettingsViewController(modInfo, DidActivate);
+    BSML::Register::RegisterSettingsMenu("RandomSongPicker", DidActivate, true);
 
+    auto logger = Paper::ConstLoggerContext("RandomSongPicker");
     // Install Hooks
     getLogger().info("Installing hooks...");
-    INSTALL_HOOK(getLogger(), ActivateFlowCoordinatorHook);
-    INSTALL_HOOK(getLogger(), FixedUpdateHook);
-    INSTALL_HOOK(getLogger(), LevelSelectionNavigationControllerDidActivate);
-    INSTALL_HOOK(getLogger(), LevelSelectionNavigationControllerDidDeactivate);
+    INSTALL_HOOK(logger, ActivateFlowCoordinatorHook);
+    INSTALL_HOOK(logger, FixedUpdateHook);
+    INSTALL_HOOK(logger, LevelSelectionNavigationControllerDidActivate);
+    INSTALL_HOOK(logger, LevelSelectionNavigationControllerDidDeactivate);
     getLogger().info("Installed all hooks!");
 }
