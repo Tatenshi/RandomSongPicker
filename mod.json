@@ -11,14 +11,14 @@
   "coverImage": "cover.jpg",
   "dependencies": [
     {
-      "version": "^0.17.2",
+      "version": "^0.17.6",
       "id": "custom-types",
-      "downloadIfMissing": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.17.3/CustomTypes.qmod"
+      "downloadIfMissing": "https://github.com/QuestPackageManager/Il2CppQuestTypePatching/releases/download/v0.17.6/CustomTypes.qmod"
     },
     {
       "version": "^0.4.16",
       "id": "bsml",
-      "downloadIfMissing": "https://github.com/RedBrumbler/Quest-BSML/releases/download/v0.4.16/BSML.qmod"
+      "downloadIfMissing": "https://github.com/RedBrumbler/Quest-BSML/releases/download/v0.4.18/BSML.qmod"
     },
     {
       "version": "^3.6.3",
@@ -31,7 +31,7 @@
     "libRandomSongPicker.so"
   ],
   "libraryFiles": [
-    "libbeatsaber-hook_5_1_2.so"
+    "libbeatsaber-hook_5_1_6.so"
   ],
   "fileCopies": [],
   "copyExtensions": []
