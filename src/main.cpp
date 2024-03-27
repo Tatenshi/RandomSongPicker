@@ -104,6 +104,11 @@ MAKE_HOOK_MATCH(FixedUpdateHook, &GlobalNamespace::OculusVRHelper::FixedUpdate, 
         }
     }
 }
+// Called at the early stages of game loading
+extern "C" __attribute__((visibility("default"))) void setup(CModInfo& info) {
+    info.id = MOD_ID;
+    info.version = VERSION;
+}
 
 // Called later on in the game loading - a good time to install function hooks
 extern "C" __attribute__((visibility("default"))) void late_load()
