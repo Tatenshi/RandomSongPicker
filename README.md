@@ -1,4 +1,8 @@
 # RandomSongPicker
+![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/tatenshi/RandomSongPicker/latest/total)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/tatenshi/RandomSongPicker/total)
+
+
 
 Pick a random song!
 
