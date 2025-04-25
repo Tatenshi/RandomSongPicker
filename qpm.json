@@ -4,7 +4,7 @@
   "info": {
     "name": "RandomSongPicker",
     "id": "RandomSongPicker",
-    "version": "0.4.4004",
+    "version": "0.4.0",
     "url": null,
     "additionalData": {
       "cmake": true,
@@ -54,7 +54,32 @@
     }
   ],
   "workspace": {
-    "scripts": {},
+    "scripts": {
+      "build": [
+        "pwsh build.ps1"
+      ],
+      "clean": [
+        "pwsh build.ps1 -clean"
+      ],
+      "copy": [
+        "pwsh copy.ps1"
+      ],
+      "log": [
+        "pwsh start-logging.ps1"
+      ],
+      "qmod": [
+        "pwsh createqmod.ps1"
+      ],
+      "restart": [
+        "pwsh restart-game.ps1"
+      ],
+      "stack": [
+        "pwsh ndk-stack.ps1"
+      ],
+      "tomb": [
+        "pwsh pull-tombstone.ps1"
+      ]
+    },
     "ndk": "^27.2.12479018",
     "qmodIncludeDirs": [
       "./build",
