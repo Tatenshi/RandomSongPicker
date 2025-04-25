@@ -24,12 +24,12 @@ namespace RandomSongImpl {
             GlobalNamespace::BeatmapLevelPack *levelPack = levelCollectionNavigationController->_levelPack;
             if (levelPack)
             {
-                allmapsArray = levelPack->___beatmapLevels;
+                allmapsArray = levelPack->____beatmapLevels;
                 getLogger().info("Acquired Maps using CollectionNavigationView");
             }
             else
             {
-                allmapsArray = filteringNavigationController->_levelSearchViewController->_beatmapLevelPack->beatmapLevels;
+                allmapsArray = filteringNavigationController->_levelSearchViewController->_beatmapLevelPack->_beatmapLevels;
                 getLogger().info("Acquired Maps using SearchView");
             }
 

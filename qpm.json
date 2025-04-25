@@ -4,7 +4,7 @@
   "info": {
     "name": "RandomSongPicker",
     "id": "RandomSongPicker",
-    "version": "0.4.0",
+    "version": "0.4.4004",
     "url": null,
     "additionalData": {
       "cmake": true,
@@ -14,12 +14,12 @@
   "dependencies": [
     {
       "id": "beatsaber-hook",
-      "versionRange": "^5.1.9",
+      "versionRange": "^6.4.1",
       "additionalData": {}
     },
     {
       "id": "scotland2",
-      "versionRange": "^0.1.4",
+      "versionRange": "^0.1.6",
       "additionalData": {
         "includeQmod": false,
         "private": true
@@ -27,29 +27,40 @@
     },
     {
       "id": "bs-cordl",
-      "versionRange": "^3700.0.0",
+      "versionRange": "^4004.0.0",
       "additionalData": {}
     },
     {
       "id": "custom-types",
-      "versionRange": "^0.17.10",
+      "versionRange": "^0.18.2",
       "additionalData": {}
     },
     {
       "id": "config-utils",
-      "versionRange": "^1.4.2",
+      "versionRange": "^2.0.2",
       "additionalData": {}
     },
     {
       "id": "bsml",
-      "versionRange": "^0.4.43",
+      "versionRange": "^0.4.51",
       "additionalData": {}
     },
     {
-      "id": "paper",
-      "versionRange": "^3.6.3",
-      "additionalData": {}
+      "id": "paper2_scotland2",
+      "versionRange": "^4.6.1",
+      "additionalData": {
+        "private": true
+      }
     }
   ],
-  "workspace": null
+  "workspace": {
+    "scripts": {},
+    "ndk": "^27.2.12479018",
+    "qmodIncludeDirs": [
+      "./build",
+      "./extern/libs"
+    ],
+    "qmodIncludeFiles": [],
+    "qmodOutput": null
+  }
 }
