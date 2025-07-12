@@ -1,4 +1,6 @@
 {
+  "$schema": "https://raw.githubusercontent.com/QuestPackageManager/QPM.Package/refs/heads/main/qpm.schema.json",
+  "version": "0.4.0",
   "sharedDir": "shared",
   "dependenciesDir": "extern",
   "info": {
@@ -7,52 +9,10 @@
     "version": "0.4.0",
     "url": null,
     "additionalData": {
-      "cmake": true,
-      "overrideSoName": "libRandomSongPicker.so"
+      "overrideSoName": "libRandomSongPicker.so",
+      "cmake": true
     }
   },
-  "dependencies": [
-    {
-      "id": "beatsaber-hook",
-      "versionRange": "^6.4.2",
-      "additionalData": {}
-    },
-    {
-      "id": "scotland2",
-      "versionRange": "^0.1.6",
-      "additionalData": {
-        "includeQmod": false,
-        "private": true
-      }
-    },
-    {
-      "id": "bs-cordl",
-      "versionRange": "4006.*",
-      "additionalData": {}
-    },
-    {
-      "id": "custom-types",
-      "versionRange": "^0.18.3",
-      "additionalData": {}
-    },
-    {
-      "id": "config-utils",
-      "versionRange": "^2.0.3",
-      "additionalData": {}
-    },
-    {
-      "id": "bsml",
-      "versionRange": "^0.4.53",
-      "additionalData": {}
-    },
-    {
-      "id": "paper2_scotland2",
-      "versionRange": "^4.6.4",
-      "additionalData": {
-        "private": true
-      }
-    }
-  ],
   "workspace": {
     "scripts": {
       "build": [
@@ -87,5 +47,47 @@
     ],
     "qmodIncludeFiles": [],
     "qmodOutput": "./RandomSongPicker.qmod"
-  }
+  },
+  "dependencies": [
+    {
+      "id": "beatsaber-hook",
+      "versionRange": "^6.4.2",
+      "additionalData": {}
+    },
+    {
+      "id": "scotland2",
+      "versionRange": "^0.1.6",
+      "additionalData": {
+        "includeQmod": false,
+        "private": true
+      }
+    },
+    {
+      "id": "bs-cordl",
+      "versionRange": "4007.*",
+      "additionalData": {}
+    },
+    {
+      "id": "custom-types",
+      "versionRange": "^0.18.3",
+      "additionalData": {}
+    },
+    {
+      "id": "config-utils",
+      "versionRange": "^2.0.3",
+      "additionalData": {}
+    },
+    {
+      "id": "bsml",
+      "versionRange": "^0.4.54",
+      "additionalData": {}
+    },
+    {
+      "id": "paper2_scotland2",
+      "versionRange": "^4.6.4",
+      "additionalData": {
+        "private": true
+      }
+    }
+  ]
 }
