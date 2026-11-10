@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include "TaskRunner.hpp"
 
 MAKE_HOOK_MATCH(ActivateFlowCoordinatorHook, &HMUI::FlowCoordinator::Activate, void, HMUI::FlowCoordinator *self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
 {
@@ -6,7 +7,7 @@ MAKE_HOOK_MATCH(ActivateFlowCoordinatorHook, &HMUI::FlowCoordinator::Activate, v
     ActivateFlowCoordinatorHook(self, firstActivation, addedToHierarchy, screenSystemEnabling);
 	
     // Button only enabled in Solo and Party
-    if (il2cpp_utils::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator>(self) || il2cpp_utils::try_cast<GlobalNamespace::PartyFreePlayFlowCoordinator>(self) || il2cpp_utils::try_cast<GlobalNamespace::MultiplayerLevelSelectionFlowCoordinator>(self))
+    if (i2c::try_cast<GlobalNamespace::SoloFreePlayFlowCoordinator*>(self) || i2c::try_cast<GlobalNamespace::PartyFreePlayFlowCoordinator*>(self) || i2c::try_cast<GlobalNamespace::MultiplayerLevelSelectionFlowCoordinator*>(self))
     {
         // Save Controller for later use in button onClick
         auto *LevelSelectionFlowCoordinatorInstance = (GlobalNamespace::LevelSelectionFlowCoordinator *)self;
@@ -77,33 +78,38 @@ MAKE_HOOK_MATCH(LevelSelectionNavigationControllerDidDeactivate, &GlobalNamespac
     }
 }
 
-MAKE_HOOK_MATCH(FixedUpdateHook, &GlobalNamespace::OculusVRHelper::FixedUpdate, void, GlobalNamespace::OculusVRHelper* self){
-    FixedUpdateHook(self);
+// TODO Only temporarily here until metacore works
+DEFINE_TYPE(RandomSongPicker, TaskRunner);
 
+void RandomSongPicker::TaskRunner::FixedUpdate() 
+{
     // 0 Means nothing is assigned, and we dont need to do anything
-    int useButtonValue = getModConfig().UseButton.GetValue();
+    const int useButtonValue = getModConfig().UseButton.GetValue();
     if(useButtonValue > 0){
-        // Determine if we need the Right or Left Controller (Right is 2 Left is One)
+        GlobalNamespace::OVRInput::Update();
+        // Determine if we need the Right or Left Controller (Right is 1 Left is 0)
         // Definition from: GlobalNamespace::OVRInput::Controller::RTouch
-        int controllerIndex = useButtonValue > 2 ? 1 : 2;
+        auto controllerIndex = static_cast<MetaCore::Input::Controllers>(useButtonValue > 2 ? 0 : 1);
 
         // Here we correct the Index for direct Usage as Input for OVRInput.Get
         // After this line the Primary Button A/X (1/3 in Config) is 0 and the Secondary Button (2/4 in Config) is 1
         // Source: https://developer.oculus.com/documentation/unity/unity-ovrinput/
-        useButtonValue = ((useButtonValue - 1) % 2) + 1;
+        auto metacoreButton = static_cast<MetaCore::Input::Buttons>(((useButtonValue - 1) % 2));
 
-        bool buttonPressed = GlobalNamespace::OVRInput::Get(GlobalNamespace::OVRInput_Button(useButtonValue), controllerIndex);
+        bool buttonPressed = MetaCore::Input::GetPressed(controllerIndex, metacoreButton);
         if(buttonPressed){
-            if(!pressedEventAllreadyRun) {
+            if(!pressedEventAlreadyRun) {
                 RandomSongImpl::selectRandomSong();
-                pressedEventAllreadyRun = true;
+                pressedEventAlreadyRun = true;
             }
         }
         else {
-            pressedEventAllreadyRun = false;
+            pressedEventAlreadyRun = false;
         }
     }
 }
+
+
 // Called at the early stages of game loading
 extern "C" __attribute__((visibility("default"))) void setup(CModInfo& info) {
     info.id = MOD_ID;
@@ -115,7 +121,8 @@ extern "C" __attribute__((visibility("default"))) void late_load()
 {
     // Init things
     getModConfig().Init(modInfo);
-    il2cpp_functions::Init();
+    i2c::functions::initialize();
+    custom_types::Register::AutoRegister();
 
     getLogger().info("Completed setup!");
 
@@ -126,8 +133,13 @@ extern "C" __attribute__((visibility("default"))) void late_load()
     // Install Hooks
     getLogger().info("Installing hooks...");
     INSTALL_HOOK(logger, ActivateFlowCoordinatorHook);
-    INSTALL_HOOK(logger, FixedUpdateHook);
     INSTALL_HOOK(logger, LevelSelectionNavigationControllerDidActivate);
     INSTALL_HOOK(logger, LevelSelectionNavigationControllerDidDeactivate);
     getLogger().info("Installed all hooks!");
+
+    getLogger().info("Creating RSP TaskRunner...");
+    auto gameObject = UnityEngine::GameObject::New_ctor("RSPTaskRunner");
+    gameObject->AddComponent<RandomSongPicker::TaskRunner*>();
+    UnityEngine::Object::DontDestroyOnLoad(gameObject);
+    getLogger().info("Created RSPTaskRunner GameObject and added TaskRunner component.");
 }

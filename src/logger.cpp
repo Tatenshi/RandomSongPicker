@@ -2,6 +2,6 @@
 
 // Returns a logger, useful for printing debug messages
 Paper::ConstLoggerContext<17UL> getLogger() {
-    static auto fastContext = Paper::Logger::WithContext<"RandomSongPicker">();
+    static constexpr auto fastContext = Paper::ConstLoggerContext("RandomSongPicker");
     return fastContext;
 }

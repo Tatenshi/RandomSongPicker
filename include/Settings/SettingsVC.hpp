@@ -8,3 +8,7 @@
 #include "logger.hpp"
 
 void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
+
+namespace SettingsVC {
+    extern int ButtonSubscriptionID;
+}

@@ -8,6 +8,8 @@ std::vector<std::string_view> buttonOptions = {
     "Y"
 };
 
+int SettingsVC::ButtonSubscriptionID = 0;
+
 void DidActivate(HMUI::ViewController* self, bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
     if(firstActivation) {
         // Make Touchable

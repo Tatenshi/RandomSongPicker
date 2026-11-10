@@ -1,5 +1,3 @@
-#include "beatsaber-hook/shared/utils/typedefs-wrappers.hpp"
-
 #include "GlobalNamespace/LevelCollectionNavigationController.hpp"
 #include "GlobalNamespace/LevelSelectionNavigationController.hpp"
 #include "GlobalNamespace/LevelFilteringNavigationController.hpp"
@@ -15,8 +13,8 @@
 
 namespace RandomSongImpl {
 
-    extern SafePtrUnity<GlobalNamespace::LevelCollectionNavigationController> levelCollectionNavigationController;
-    extern SafePtrUnity<GlobalNamespace::LevelFilteringNavigationController> filteringNavigationController;
+    extern safe_ptr<GlobalNamespace::LevelCollectionNavigationController*> levelCollectionNavigationController;
+    extern safe_ptr<GlobalNamespace::LevelFilteringNavigationController*> filteringNavigationController;
 
     void selectRandomSong();
 }

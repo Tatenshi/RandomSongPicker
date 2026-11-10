@@ -2,10 +2,8 @@
 
 // beatsaber-hook is a modding framework that lets us call functions and fetch field values from in the game
 // It also allows creating objects, configuration, and importantly, hooking methods to modify their values
-#include "beatsaber-hook/shared/utils/logging.hpp"
-#include "beatsaber-hook/shared/config/config-utils.hpp"
-#include "beatsaber-hook/shared/utils/il2cpp-functions.hpp"
-#include "beatsaber-hook/shared/utils/hooking.hpp"
+#include "config-utils/shared/config-utils.hpp"
+#include "beatsaber-hook/shared/hooking.hpp"
 
 // Includes for the functionality of the mod
 #include "GlobalNamespace/MainMenuViewController.hpp"
@@ -13,7 +11,6 @@
 #include "GlobalNamespace/SoloFreePlayFlowCoordinator.hpp"
 #include "GlobalNamespace/PartyFreePlayFlowCoordinator.hpp"
 #include "GlobalNamespace/MultiplayerLevelSelectionFlowCoordinator.hpp"
-#include "GlobalNamespace/OculusVRHelper.hpp"
 #include "GlobalNamespace/VRController.hpp"
 #include "GlobalNamespace/OVRInput.hpp"
 #include "UnityEngine/UI/LayoutElement.hpp"
@@ -28,6 +25,7 @@
 #include "TMPro/TextMeshProUGUI.hpp"
 #include <vector>
 #include <random>
+#include "metacore-bs/shared/input.hpp"
 
 // Icons
 #include "Impl/icons.hpp"
@@ -36,4 +34,4 @@
 #include "Settings/SettingsVC.hpp"
 
 static UnityEngine::UI::Button *button;
-static bool pressedEventAllreadyRun = false;
+static bool pressedEventAlreadyRun = false;

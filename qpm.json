@@ -1,5 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/QuestPackageManager/QPM.Package/refs/heads/main/qpm.schema.json",
   "version": "0.4.0",
   "sharedDir": "shared",
   "dependenciesDir": "extern",
@@ -40,7 +39,7 @@
         "pwsh pull-tombstone.ps1"
       ]
     },
-    "ndk": "^27.3.13750724",
+    "ndk": "^29.0.14206865",
     "qmodIncludeDirs": [
       "./build",
       "./extern/libs"
@@ -51,12 +50,12 @@
   "dependencies": [
     {
       "id": "beatsaber-hook",
-      "versionRange": "^6.4.2",
+      "versionRange": "^9.3.0",
       "additionalData": {}
     },
     {
       "id": "scotland2",
-      "versionRange": "^0.1.6",
+      "versionRange": "^0.1.7",
       "additionalData": {
         "includeQmod": false,
         "private": true
@@ -64,30 +63,43 @@
     },
     {
       "id": "bs-cordl",
-      "versionRange": "4008.*",
+      "versionRange": "4503.*",
       "additionalData": {}
     },
     {
       "id": "custom-types",
-      "versionRange": "^0.18.3",
+      "versionRange": "^0.21.2",
       "additionalData": {}
     },
     {
       "id": "config-utils",
-      "versionRange": "^2.0.3",
+      "versionRange": "^3.0.0",
       "additionalData": {}
     },
     {
       "id": "bsml",
-      "versionRange": "^0.4.55",
+      "versionRange": "^0.6.5",
       "additionalData": {}
     },
     {
       "id": "paper2_scotland2",
-      "versionRange": "^4.6.4",
-      "additionalData": {
-        "private": true
-      }
+      "versionRange": "^4.8.0",
+      "additionalData": {}
+    },
+    {
+      "id": "metacore-bs",
+      "versionRange": "^1.0.2",
+      "additionalData": {}
+    },
+    {
+      "id": "flamingo",
+      "versionRange": "^1.2.1",
+      "additionalData": {}
+    },
+    {
+      "id": "reflectcpp",
+      "versionRange": "^0.25.0",
+      "additionalData": {}
     }
   ]
 }

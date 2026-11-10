@@ -2,8 +2,8 @@
 
 namespace RandomSongImpl {
 
-    SafePtrUnity<GlobalNamespace::LevelCollectionNavigationController> levelCollectionNavigationController;
-    SafePtrUnity<GlobalNamespace::LevelFilteringNavigationController> filteringNavigationController;
+    safe_ptr<GlobalNamespace::LevelCollectionNavigationController*> levelCollectionNavigationController;
+    safe_ptr<GlobalNamespace::LevelFilteringNavigationController*> filteringNavigationController;
 
     std::mt19937 generator(time(nullptr));
     
